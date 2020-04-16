@@ -104,6 +104,9 @@ jobs:
         
         execute_process(COMMAND ls qt5/${qt_dir_prefix} OUTPUT_VARIABLE FOO)
         message( ${FOO} )
+        
+        execute_process(COMMAND ls qt5/ OUTPUT_VARIABLE FOO)
+        message( ${FOO} )
 
     - name: Download Qt Creator
       id: qt_creator
