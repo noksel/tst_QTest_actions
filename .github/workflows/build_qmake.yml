@@ -66,6 +66,7 @@ jobs:
         set(qt_base_url "https://download.qt.io/online/qtsdkrepository/${url_os}/desktop/qt5_${qt_version_dotless}")
         file(DOWNLOAD "${qt_base_url}/Updates.xml" ./Updates.xml SHOW_PROGRESS)
 
+        message( ${qt_package_name} )
         file(READ ./Updates.xml updates_xml)
         string(REGEX MATCH "<Name>${qt_package_name}.*<Version>([0-9+-.]+)</Version>.*<DownloadableArchives>qtbase([a-zA-Z0-9_-]+).7z"
           updates_xml_output "${updates_xml}")
