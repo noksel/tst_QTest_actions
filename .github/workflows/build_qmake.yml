@@ -107,15 +107,6 @@ jobs:
         string(REPLACE "licheck_mac" "" qtconfig "${qtconfig}")
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
         
-        execute_process(COMMAND ls qt5/ OUTPUT_VARIABLE FOO)
-        message( ${FOO} )
-        
-        execute_process(COMMAND ls qt5/Tools/ OUTPUT_VARIABLE FOO)
-        message( ${FOO} )
-        
-        execute_process(COMMAND ls qt5/Tools/mingw730_64/bin OUTPUT_VARIABLE FOO)
-        message( ${FOO} )
-        
         set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/;$ENV{PATH}")
         set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
         
@@ -150,7 +141,7 @@ jobs:
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake
             $ENV{APP_PRO}
-            -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++
+            -spec win32-g++
             CONFIG+=release
           RESULT_VARIABLE result
         )
