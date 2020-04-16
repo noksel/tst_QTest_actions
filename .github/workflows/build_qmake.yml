@@ -3,7 +3,7 @@ name: QMake Build Matrix
 on: [push]
 
 env:
-  QT_VERSION: 5.12.8
+  QT_VERSION: 5.14.0
   APP_PRO: test_qtest.pro
   APP_NAME: test_qtest
 
