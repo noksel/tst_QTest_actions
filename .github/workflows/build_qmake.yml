@@ -92,7 +92,7 @@ jobs:
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qt5)
         endforeach()
         
-        execute_process(COMMAND ls /d/a/tst_QTest_actions/tst_QTest_actions/qt5 OUTPUT_VARIABLE FOO)
+        execute_process(COMMAND ls '/d/a/tst_QTest_actions/tst_QTest_actions/qt5' OUTPUT_VARIABLE FOO)
         message(${FOO})
 
         file(READ "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" qtconfig)
