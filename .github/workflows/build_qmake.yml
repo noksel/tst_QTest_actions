@@ -119,7 +119,7 @@ jobs:
           endforeach()
         endif()
         
-        execute_process(COMMAND ls "$ENV{GITHUB_WORKSPACE}/qt5/" OUTPUT_VARIABLE FOO)
+        execute_process(COMMAND ls "$ENV{GITHUB_WORKSPACE}/qt5/${qt_version}" OUTPUT_VARIABLE FOO)
         message( ${FOO} )
 
         execute_process(
