@@ -32,7 +32,7 @@ jobs:
       run: |
         if ("${{ runner.os }}" STREQUAL "Linux")
           execute_process(
-            COMMAND sudo apt install libgl1-mesa-dev libicu-dev
+            COMMAND sudo apt install libgl1-mesa-dev
           )
         endif()
 
@@ -128,6 +128,13 @@ jobs:
         if (NOT result EQUAL 0)
           message(FATAL_ERROR "Bad exit status")
         endif()
+        
+    - name: echo
+      shell: bash
+      run: |    
+        val=`ls -l /home/runner/work/tst_QTest_actions/tst_QTest_actions/qt5/5.14.0/gcc_64/lib/libicui18n.so.56`
+        echo "____!!!!!!!!!!!____"
+        echo ${{val}}
 
     - name: Build
       shell: cmake -P {0}
@@ -138,7 +145,7 @@ jobs:
           set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/:$ENV{PATH}")
           set(ENV{LD_LIBRARY_PATH} "qtcreator/lib/Qt/lib:$ENV{LD_LIBRARY_PATH}")
         endif()
-
+        
         include(ProcessorCount)
         ProcessorCount(N)
 
