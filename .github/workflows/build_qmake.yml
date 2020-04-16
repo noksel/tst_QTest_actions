@@ -19,10 +19,10 @@ jobs:
             os: windows-latest,
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
           }
-        - {
-            name: "Linux Latest x64", artifact: "Linux-x64.zip",
-            os: ubuntu-latest
-          }
+#        - {
+#            name: "Linux Latest x64", artifact: "Linux-x64.zip",
+#            os: ubuntu-latest
+#          }
 
     steps:
     - uses: actions/checkout@v1
@@ -207,12 +207,12 @@ jobs:
         config:
         - {
             name: "Windows Latest x64", artifact: "Windows-x64.zip",
-            os: ubuntu-latest
+            os: windows-latest
           }
-        - {
-            name: "Linux Latest x64", artifact: "Linux-x64.zip",
-            os: ubuntu-latest
-          }
+#        - {
+#            name: "Linux Latest x64", artifact: "Linux-x64.zip",
+#            os: ubuntu-latest
+#          }
     needs: release
 
     steps:
