@@ -15,9 +15,9 @@ jobs:
       matrix:
         config:
         - {
-            name: "Windows Latest MinGW x64", artifact: "Windows-x64.zip",
+            name: "Windows Latest x64", artifact: "Windows-x64.zip",
             os: windows-latest,
-            environment_script: "D:/a/tst_QTest_actions/tst_QTest_actions/qt5/5.12.8/mingw73_64/bin/qtenv2.bat"
+            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
           }
 #        - {
 #            name: "Linux Latest x64", artifact: "Linux-x64.zip",
@@ -93,9 +93,6 @@ jobs:
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qt5)
           message ("${qt_base_url}/${qt_package_name}/${package_version}${package}${package_suffix}.7z")
         endforeach()
-        
-        execute_process(COMMAND pwd OUTPUT_VARIABLE FOO)
-        message( ${FOO} )
 
         file(READ "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" qtconfig)
         string(REPLACE "Enterprise" "OpenSource" qtconfig "${qtconfig}")
