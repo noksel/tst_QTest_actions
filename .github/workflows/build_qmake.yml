@@ -125,6 +125,7 @@ jobs:
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake
             $ENV{APP_PRO}
+            -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++
             CONFIG+=release
           RESULT_VARIABLE result
         )
@@ -139,7 +140,6 @@ jobs:
           set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
         else()
           set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/:$ENV{PATH}")
-          set(ENV{LD_LIBRARY_PATH} "qtcreator/lib/Qt/lib:$ENV{LD_LIBRARY_PATH}")
         endif()
         
         include(ProcessorCount)
