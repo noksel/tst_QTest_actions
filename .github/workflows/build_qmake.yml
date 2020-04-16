@@ -146,7 +146,6 @@ jobs:
 #        if ("${{ runner.os }}" STREQUAL "Windows")
 #          set(make_program "qtcreator/bin/jom")
 #        endif()
-
         execute_process(
           COMMAND ${make_program}
           RESULT_VARIABLE result
