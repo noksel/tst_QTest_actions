@@ -178,7 +178,7 @@ jobs:
     - name: Print
       shell: bash
       run: |    
-        val=`lsb_release -a`
+        val=`whereis licui18n`
         echo "____!!!!!!!!!!!____"
         echo $val
 
