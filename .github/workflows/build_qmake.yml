@@ -143,9 +143,9 @@ jobs:
         ProcessorCount(N)
 
         set(make_program make -j ${N})
-        if ("${{ runner.os }}" STREQUAL "Windows")
-          set(make_program "qtcreator/bin/jom")
-        endif()
+#        if ("${{ runner.os }}" STREQUAL "Windows")
+#          set(make_program "qtcreator/bin/jom")
+#        endif()
 
         execute_process(
           COMMAND ${make_program}
@@ -157,11 +157,11 @@ jobs:
 
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/$ENV{APP_NAME}-$ENV{QT_VERSION}-${{ matrix.config.artifact }}" artifact)
 
-#        execute_process(COMMAND
-#          ${CMAKE_COMMAND} -E tar cvf ${artifact} --format=zip "${{ steps.qt_creator.outputs.qtc_binary_name }}"
-#          WORKING_DIRECTORY "${{ steps.qt_creator.outputs.qtc_output_directory }}"
-#        )
-#
+        execute_process(COMMAND
+          ${CMAKE_COMMAND} -E tar cvf ${artifact} --format=zip "${{ steps.qt_creator.outputs.qtc_binary_name }}"
+          WORKING_DIRECTORY "${{ steps.qt_creator.outputs.qtc_output_directory }}"
+        )
+
     - uses: actions/upload-artifact@v1
       id: upload_artifact
       with:
