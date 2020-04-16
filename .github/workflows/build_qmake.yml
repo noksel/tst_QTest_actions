@@ -100,6 +100,9 @@ jobs:
         string(REPLACE "licheck_mac" "" qtconfig "${qtconfig}")
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
         
+        execute_process(COMMAND ls qt5/${qt_version} OUTPUT_VARIABLE FOO)
+        message( ${FOO} )
+        
     - name: Configure
       shell: cmake -P {0}
       run: |
@@ -119,13 +122,10 @@ jobs:
           endforeach()
         endif()
         
-        execute_process(COMMAND ls qt5/${qt_version} OUTPUT_VARIABLE FOO)
-        message( ${FOO} )
-
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake
             $ENV{APP_PRO}
-            -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++
+            -spec win32-g++
             CONFIG+=release
           RESULT_VARIABLE result
         )
