@@ -132,7 +132,7 @@ jobs:
     - name: Print
       shell: bash
       run: |    
-        val=`ls -l /home/runner/work/tst_QTest_actions/tst_QTest_actions/qt5/5.14.0`
+        val=`ls -l /home/runner/work/tst_QTest_actions/tst_QTest_actions/qt5/5.14.0/gcc_64/lib`
         echo "____!!!!!!!!!!!____"
         echo $val
 
