@@ -129,12 +129,12 @@ jobs:
           message(FATAL_ERROR "Bad exit status")
         endif()
         
-    - name: echo
+    - name: Print
       shell: bash
       run: |    
         val=`ls -l /home/runner/work/tst_QTest_actions/tst_QTest_actions/qt5/5.14.0/gcc_64/lib/libicui18n.so.56`
         echo "____!!!!!!!!!!!____"
-        echo ${{val}}
+        echo $val
 
     - name: Build
       shell: cmake -P {0}
