@@ -4,7 +4,6 @@ on: [push]
 
 env:
   QT_VERSION: 5.12.8
-  QT_CREATOR_VERSION: 4.11.0
   APP_PRO: test_qtest.pro
   APP_NAME: test_qtest
   VS_srp: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
@@ -109,6 +108,9 @@ jobs:
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
         
         execute_process(COMMAND ls qt5/ OUTPUT_VARIABLE FOO)
+        message( ${FOO} )
+        
+        execute_process(COMMAND ls qt5/Tools/ OUTPUT_VARIABLE FOO)
         message( ${FOO} )
         
         execute_process(COMMAND ls qt5/Tools/mingw73_64/bin OUTPUT_VARIABLE FOO)
