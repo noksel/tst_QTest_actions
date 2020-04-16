@@ -113,10 +113,10 @@ jobs:
         execute_process(COMMAND ls qt5/Tools/ OUTPUT_VARIABLE FOO)
         message( ${FOO} )
         
-        execute_process(COMMAND ls qt5/Tools/mingw73_64/bin OUTPUT_VARIABLE FOO)
+        execute_process(COMMAND ls qt5/Tools/mingw730_64/bin OUTPUT_VARIABLE FOO)
         message( ${FOO} )
         
-        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw73_64/bin/;$ENV{PATH}")
+        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/;$ENV{PATH}")
         set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
         
         message( ${FOO} )
