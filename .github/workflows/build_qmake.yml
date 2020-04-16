@@ -90,6 +90,7 @@ jobs:
             SHOW_PROGRESS
           )
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qt5)
+          message ("${qt_base_url}/${qt_package_name}/${package_version}${package}${package_suffix}.7z")
         endforeach()
         
         execute_process(COMMAND ls -lh /d/a/tst_QTest_actions/tst_QTest_actions OUTPUT_VARIABLE FOO)
