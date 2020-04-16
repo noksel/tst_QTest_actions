@@ -6,6 +6,7 @@ env:
   QT_VERSION: 5.12.8
   APP_PRO: test_qtest.pro
   APP_NAME: test_qtest
+  VS_srp: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
 
 jobs:
   build:
@@ -100,7 +101,7 @@ jobs:
         string(REPLACE "licheck_mac" "" qtconfig "${qtconfig}")
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
         
-        execute_process(COMMAND ls qt5/${qt_version} OUTPUT_VARIABLE FOO)
+        execute_process(COMMAND ls qt5/${qt_dir_prefix} OUTPUT_VARIABLE FOO)
         message( ${FOO} )
         
     - name: Configure
@@ -108,9 +109,16 @@ jobs:
       run: |
         if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
           execute_process(
-            COMMAND "${{ matrix.config.environment_script }}" && set
+            COMMAND "$ENV{VS_srp}" && set
             OUTPUT_FILE environment_script_output.txt
           )
+          
+          execute_process(
+            COMMAND "$ENV{VS_srp}" && set
+            OUTPUT_VARIABLE envtxt
+          )
+          message( ${envtxt} )
+          
           file(STRINGS environment_script_output.txt output_lines)
           foreach(line IN LISTS output_lines)
             if (line MATCHES "^([a-zA-Z0-9_-]+)=(.*)$")
@@ -125,7 +133,7 @@ jobs:
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake
             $ENV{APP_PRO}
-            -spec win32-g++
+            -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++
             CONFIG+=release
           RESULT_VARIABLE result
         )
