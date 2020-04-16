@@ -93,7 +93,7 @@ jobs:
         endforeach()
         
         execute_process(COMMAND ls /d/a/tst_QTest_actions/tst_QTest_actions/qt5 OUTPUT_VARIABLE FOO)
-        message(${FOO})
+        message(${{FOO}})
 
         file(READ "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" qtconfig)
         string(REPLACE "Enterprise" "OpenSource" qtconfig "${qtconfig}")
