@@ -17,7 +17,7 @@ jobs:
         - {
             name: "Windows Latest x64", artifact: "Windows-x64.zip",
             os: windows-latest,
-            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+            environment_script: "D:/a/tst_QTest_actions/tst_QTest_actions/qt5/5.12.8/mingw73_64/bin/qtenv2.bat"
           }
 #        - {
 #            name: "Linux Latest x64", artifact: "Linux-x64.zip",
@@ -45,7 +45,7 @@ jobs:
         string(REPLACE "." "" qt_version_dotless "${qt_version}")
         if ("${{ runner.os }}" STREQUAL "Windows")
           set(url_os "windows_x86")
-          if ("${{ matrix.config.environment_script }}" MATCHES "vcvars64.bat")
+          if ("${{ matrix.config.environment_script }}" MATCHES "qtenv2.bat")
             set(qt_package_name "qt.qt5.${qt_version_dotless}.win64_mingw73")
             set(qt_dir_prefix "${qt_version}/mingw73_64")
           elseif ("${{ matrix.config.environment_script }}" MATCHES "vcvars32.bat")
