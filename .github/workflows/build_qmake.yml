@@ -71,6 +71,8 @@ jobs:
           updates_xml_output "${updates_xml}")
         set(package_version ${CMAKE_MATCH_1})
         set(package_suffix ${CMAKE_MATCH_2})
+        message( ${CMAKE_MATCH_1} )
+        message( ${CMAKE_MATCH_2} )
         string(REPLACE "-debug-symbols" "" package_suffix "${package_suffix}")
 
         # Workaround for CMake's greedy regex
