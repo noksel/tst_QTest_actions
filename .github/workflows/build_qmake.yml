@@ -100,9 +100,6 @@ jobs:
         string(REPLACE "licheck_mac" "" qtconfig "${qtconfig}")
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
         
-        execute_process(COMMAND ls /d/a/tst_QTest_actions/tst_QTest_actions/qt5/5.12.8/mingw73_64/bin/  OUTPUT_VARIABLE FOO)
-        message( ${FOO} )
-
     - name: Configure
       shell: cmake -P {0}
       run: |
@@ -121,6 +118,12 @@ jobs:
             endif()
           endforeach()
         endif()
+        
+        execute_process(COMMAND where qmake OUTPUT_VARIABLE FOO)
+        message( ${FOO} )
+        
+        execute_process(COMMAND ls "$ENV{GITHUB_WORKSPACE}/qt5/" OUTPUT_VARIABLE FOO)
+        message( ${FOO} )
 
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake
