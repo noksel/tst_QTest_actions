@@ -119,7 +119,7 @@ jobs:
         set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/;$ENV{PATH}")
         set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
         
-        message( ${FOO} )
+        message( $ENV{PATH} )
      
     - name: Configure
       shell: cmake -P {0}
