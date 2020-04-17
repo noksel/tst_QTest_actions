@@ -168,13 +168,12 @@ jobs:
           set( spec "-makefile -spec linux-g++-64" )
         endif()
         execute_process(COMMAND ls .)
+        execute_process(COMMAND qmake -set QT_SYSROOT ${{ steps.qt.outputs.qt_dir }})
+      
         execute_process(COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake -version)
         execute_process(COMMAND qmake -query)
-        
-        execute_process(COMMAND ls -l /home/qt/work/install)
-        execute_process(COMMAND ls -l /home/qt/work/install/lib)
-        
-        message ("QTDIR: $ENV{QTDIR}")
+      
+        message ("!!! QTDIR: $ENV{QTDIR}")
         execute_process(COMMAND "${CMAKE_COMMAND}" "-E" "environment")
         message ("!!")
         execute_process(
