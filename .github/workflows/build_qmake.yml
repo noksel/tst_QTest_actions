@@ -160,7 +160,7 @@ jobs:
         if ("${{ runner.os }}" STREQUAL "Windows")
           set( spec "-makefile -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
         elseif ("${{ runner.os }}" STREQUAL "Linux")
-          set( spec "-makefile -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/linux-g++-64" )
+          set( spec "-makefile -spec linux-g++-64" )
         endif()
          
         execute_process(
