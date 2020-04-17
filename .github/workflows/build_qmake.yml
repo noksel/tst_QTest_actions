@@ -124,7 +124,9 @@ jobs:
         string(REPLACE "licheck_mac" "" qtconfig "${qtconfig}")
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
         
-        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/;$ENV{PATH}")
+        if ("${{ runner.os }}" STREQUAL "Windows")
+          set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/;$ENV{PATH}")
+        endif()
         set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
         
         message( $ENV{PATH} )
@@ -155,16 +157,20 @@ jobs:
           endforeach()
         endif()
         
+        if ("${{ runner.os }}" STREQUAL "Windows")
+            set( spec "-spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
+        endif()
+         
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake
             $ENV{APP_PRO}
-            -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++
+            ${spec}
             CONFIG+=release
           RESULT_VARIABLE result
         )
-#        if (NOT result EQUAL 0)
-#          message(FATAL_ERROR "Bad exit status")
-#        endif()
+        if (NOT result EQUAL 0)
+          message(FATAL_ERROR "Bad exit status")
+        endif()
         
     - name: Build
       shell: cmake -P {0}
@@ -177,6 +183,11 @@ jobs:
         
         include(ProcessorCount)
         ProcessorCount(N)
+        
+        execute_process(COMMAND ls ENV{GITHUB_WORKSPACE} FOO)
+        message( ${FOO} )
+        execute_process(COMMAND ls qt5/ FOO)
+        message( ${FOO} )
 
         set(make_program make -j ${N})
         execute_process(
