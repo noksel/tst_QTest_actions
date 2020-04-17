@@ -74,9 +74,6 @@ jobs:
         set(package_version ${CMAKE_MATCH_1})
         set(package_suffix ${CMAKE_MATCH_2})
         string(REPLACE "-debug-symbols" "" package_suffix "${package_suffix}")
-        message ( "!!!!")
-        message( ${package_version} )
-        message( ${package_suffix} )
 
         # Workaround for CMake's greedy regex
         if ("${{ matrix.config.environment_script }}" MATCHES "vcvars32.bat")
