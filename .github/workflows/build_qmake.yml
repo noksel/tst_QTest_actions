@@ -101,16 +101,15 @@ jobs:
             )
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../minwg.7z WORKING_DIRECTORY qt5)
         elseif ("${{ runner.os }}" STREQUAL "Linux")
+          message( "${qt_base_url}/${qt_package_name}/${package_version}icu${package_suffix}.7z" )
           file(DOWNLOAD
-            "${qt_base_url}/${qt_package_name}/${package_version}icu${package_suffix}.7z" ./${package}.7z
+            "${qt_base_url}/${qt_package_name}/${package_version}icu${package_suffix}.7z" ./icu.7z
             SHOW_PROGRESS
           )
-          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qt5)
-        endif()
-        
-        
-        
+          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../icu.7z WORKING_DIRECTORY qt5)
+        endif() 
 
+        
 
         file(READ "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" qtconfig)
         string(REPLACE "Enterprise" "OpenSource" qtconfig "${qtconfig}")
