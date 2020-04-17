@@ -69,8 +69,13 @@ jobs:
 
         message( ${qt_package_name} )
         file(READ ./Updates.xml updates_xml)
-        string(REGEX MATCH "<Name>${qt_package_name}.*<Version>([0-9+-.]+)</Version>.*<DownloadableArchives>qtbase([a-zA-Z0-9_-]+Mingw[a-zA-Z0-9_-]+).7z"
-          updates_xml_output "${updates_xml}")
+        if ("${{ runner.os }}" STREQUAL "Windows")
+         string(REGEX MATCH "<Name>${qt_package_name}.*<Version>([0-9+-.]+)</Version>.*<DownloadableArchives>qtbase([a-zA-Z0-9_-]+Mingw[a-zA-Z0-9_-]+).7z"
+           updates_xml_output "${updates_xml}")
+        elseif ("${{ runner.os }}" STREQUAL "Linux")
+          string(REGEX MATCH "<Name>${qt_package_name}.*<Version>([0-9+-.]+)</Version>.*<DownloadableArchives>qtbase([a-zA-Z0-9_-]+).7z"
+            updates_xml_output "${updates_xml}")        
+        endif()
         set(package_version ${CMAKE_MATCH_1})
         set(package_suffix ${CMAKE_MATCH_2})
         string(REPLACE "-debug-symbols" "" package_suffix "${package_suffix}")
