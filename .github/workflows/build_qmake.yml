@@ -156,12 +156,12 @@ jobs:
         endif()
         
         message( $ENV{PATH} )  
-        #set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin:$ENV{PATH}")
+        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin:$ENV{PATH}")
         #set(ENV{QTDIR} "$ENV{GITHUB_WORKSPACE}/qt5/$ENV{QT_VERSION}")
         #set(ENV{QT_DIR} "$ENV{GITHUB_WORKSPACE}/qt5/$ENV{QT_VERSION}")
         #set(ENV{QMAKESPEC} "${{ steps.qt.outputs.qt_dir }}/mkspecs")
         #set(ENV{QT_SYSROOT} "${{ steps.qt.outputs.qt_dir }}")
-        message( $ENV{QTDIR} )
+        #message( $ENV{QTDIR} )
         message( $ENV{PATH} )
         
         if ("${{ runner.os }}" STREQUAL "Windows")
