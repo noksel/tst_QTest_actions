@@ -130,7 +130,7 @@ jobs:
         if ("${{ runner.os }}" STREQUAL "Windows")
           set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/;$ENV{PATH}")
         endif()
-        
+
         if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
           execute_process(
             COMMAND "$ENV{VS_srp}" && set
@@ -157,9 +157,7 @@ jobs:
         message( $ENV{PATH} )  
         set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/:$ENV{PATH}")
         set(ENV{QTDIR} "${{ steps.qt.outputs.qt_dir }}")
-          
-        
-        set(ENV{QTDIR} "${{ steps.qt.outputs.qt_dir }}")
+        message( $ENV{QTDIR} )
         message( $ENV{PATH} )
         
         if ("${{ runner.os }}" STREQUAL "Windows")
