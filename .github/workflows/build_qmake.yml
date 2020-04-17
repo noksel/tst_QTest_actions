@@ -168,6 +168,7 @@ jobs:
         execute_process(COMMAND ls .)
         execute_process(COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake --version OUTPUT_VARIABLE FOO)
         message( ${FOO} )
+        execute_process(COMMAND qmake --query)
         
         execute_process(COMMAND ls -l /home/qt/work/install)
         execute_process(COMMAND ls -l /home/qt/work/install/lib)
