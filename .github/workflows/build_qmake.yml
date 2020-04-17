@@ -163,10 +163,10 @@ jobs:
           set( spec "-makefile -spec linux-g++-64" )
         endif()
         
-        execute_process(COMMAND ls $ENV{GITHUB_WORKSPACE})
+        execute_process(COMMAND ls .)
          
         execute_process(
-          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake ${spec} CONFIG+=release $ENV{APP_PRO}
+          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake CONFIG+=release $ENV{APP_PRO}
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
