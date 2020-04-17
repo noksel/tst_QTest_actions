@@ -164,10 +164,7 @@ jobs:
         endif()
          
         execute_process(
-          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake
-            $ENV{APP_PRO}
-            ${spec}
-            CONFIG+=release
+          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake ${spec} CONFIG+=release $ENV{APP_PRO}
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
