@@ -155,8 +155,10 @@ jobs:
         endif()
         
         message( $ENV{PATH} )  
-        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/:$ENV{PATH}")
+        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin:$ENV{PATH}")
         set(ENV{QTDIR} "${{ steps.qt.outputs.qt_dir }}")
+        set(ENV{QT_DIR} "${{ steps.qt.outputs.qt_dir }}")
+        set(ENV{QT_SYSROOT} "${{ steps.qt.outputs.qt_dir }}")
         message( $ENV{QTDIR} )
         message( $ENV{PATH} )
         
