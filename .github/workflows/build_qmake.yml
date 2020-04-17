@@ -123,6 +123,7 @@ jobs:
         string(REPLACE "licheck64" "" qtconfig "${qtconfig}")
         string(REPLACE "licheck_mac" "" qtconfig "${qtconfig}")
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
+        file(WRITE "qt5/${qt_dir_prefix}/bin/qt.conf"  "[Paths]\r\nPrefix=..")
 
     - name: Configure
       shell: cmake -P {0}
@@ -164,9 +165,9 @@ jobs:
         message( $ENV{PATH} )
         
         if ("${{ runner.os }}" STREQUAL "Windows")
-          set( spec "-makefile -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
+          set( SPEC "-makefile -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
         elseif ("${{ runner.os }}" STREQUAL "Linux")
-          set( spec "-makefile -spec linux-g++-64" )
+          set( SPEC "-makefile -spec linux-g++-64" )
         endif()
         execute_process(COMMAND ls .)
         execute_process(COMMAND qmake -set "QT_SYSROOT" ${{ steps.qt.outputs.qt_dir }})
@@ -178,9 +179,10 @@ jobs:
       
         message ("!!! QTDIR: $ENV{QTDIR}")
         execute_process(COMMAND "${CMAKE_COMMAND}" "-E" "environment")
+        execute_process(COMMAND cat qt5/${qt_dir_prefix}/bin/qt.conf)
         message ("!!")
         execute_process(
-          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake "CONFIG+=release" $ENV{APP_PRO}
+          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake ${SPEC} "CONFIG+=release" $ENV{APP_PRO}
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
