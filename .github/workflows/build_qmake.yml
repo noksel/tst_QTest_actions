@@ -88,7 +88,7 @@ jobs:
 
         foreach(package qtbase qtdeclarative qttools qtsvg)
           file(DOWNLOAD
-            "${qt_base_url}/${qt_package_name}/${package_version}${package}${package_suffix}.7z" ./${package}.7z
+            "${qt_base_url}/${qt_package_name}/5.12.8-0-202003131355icu-linux-Rhel7.2-x64" ./${package}.7z
             SHOW_PROGRESS
           )
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qt5)
