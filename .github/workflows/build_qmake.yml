@@ -111,31 +111,24 @@ jobs:
     - name: Configure
       shell: cmake -P {0}
       run: |
-        if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
-          execute_process(
-            COMMAND "$ENV{VS_srp}" && set
-            OUTPUT_FILE environment_script_output.txt
-          )
-          
-          execute_process(
-            COMMAND "$ENV{VS_srp}" && set
-            OUTPUT_VARIABLE envtxt
-          )
-          message( ${envtxt} )
-          
-          file(STRINGS environment_script_output.txt output_lines)
-          foreach(line IN LISTS output_lines)
-            if (line MATCHES "^([a-zA-Z0-9_-]+)=(.*)$")
-              set(ENV{${CMAKE_MATCH_1}} "${CMAKE_MATCH_2}")
-
-              # Set for other steps
-              message("::set-env name=${CMAKE_MATCH_1}::${CMAKE_MATCH_2}")
-            endif()
-          endforeach()
-        endif()
-                        
-        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/;$ENV{PATH}")
-        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
+        #if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
+        #  execute_process(
+        #    COMMAND "$ENV{VS_srp}" && set
+        #    OUTPUT_FILE environment_script_output.txt
+        #  )
+        #
+        #  file(STRINGS environment_script_output.txt output_lines)
+        #  foreach(line IN LISTS output_lines)
+        #    if (line MATCHES "^([a-zA-Z0-9_-]+)=(.*)$")
+        #      set(ENV{${CMAKE_MATCH_1}} "${CMAKE_MATCH_2}")
+        #
+        #      # Set for other steps
+        #      message("::set-env name=${CMAKE_MATCH_1}::${CMAKE_MATCH_2}")
+        #    endif()
+        #  endforeach()
+        #endif()
+        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/\;$ENV{PATH}")
+        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/\;$ENV{PATH}")
         message( $ENV{PATH} )
         
         if ("${{ runner.os }}" STREQUAL "Windows")
@@ -144,6 +137,12 @@ jobs:
           set( SPEC -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/linux-g++-64 )
         endif()
         
+        message ("!!! QTDIR: $ENV{QTDIR}")
+        execute_process(COMMAND "${CMAKE_COMMAND}" "-E" "environment")
+        execute_process(COMMAND cat ${{ steps.qt.outputs.qt_dir }}/bin/qt.conf)
+        message ("!!")
+        message ( "run_qmake: ${{ steps.qt.outputs.qt_dir }}/bin/qmake ${SPEC} CONFIG+=release $ENV{APP_PRO} ")
+        
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake ${SPEC} "CONFIG+=release" $ENV{APP_PRO}
           RESULT_VARIABLE result
@@ -151,6 +150,7 @@ jobs:
         if (NOT result EQUAL 0)
           message(FATAL_ERROR "Bad exit status")
         endif()
+        execute_process(COMMAND ls .)
         
     - name: Build
       shell: cmake -P {0}
