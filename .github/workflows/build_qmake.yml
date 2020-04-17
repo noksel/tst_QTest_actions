@@ -15,15 +15,15 @@ jobs:
     strategy:
       matrix:
         config:
-        - {
-            name: "Windows Latest x64", artifact: "Windows-x64.zip",
-            os: windows-latest,
-            environment_script: "D:/a/tst_QTest_actions/tst_QTest_actions/qt5/5.12.8/mingw73_64/bin/qtenv2.bat"
-          }
 #        - {
-#            name: "Linux Latest x64", artifact: "Linux-x64.zip",
-#            os: ubuntu-latest
+#            name: "Windows Latest x64", artifact: "Windows-x64.zip",
+#            os: windows-latest,
+#            environment_script: "D:/a/tst_QTest_actions/tst_QTest_actions/qt5/5.12.8/mingw73_64/bin/qtenv2.bat"
 #          }
+        - {
+            name: "Linux Latest x64", artifact: "Linux-x64.zip",
+            os: ubuntu-latest
+          }
 
     steps:
     - uses: actions/checkout@v1
@@ -94,11 +94,23 @@ jobs:
           execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qt5)
         endforeach()
         
-        file(DOWNLOAD
-            "https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw/qt.tools.win64_mingw730/7.3.0-1x86_64-7.3.0-release-posix-seh-rt_v5-rev0.7z" ./minwg.7z
+        if ("${{ runner.os }}" STREQUAL "Windows")
+          file(DOWNLOAD
+              "https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw/qt.tools.win64_mingw730/7.3.0-1x86_64-7.3.0-release-posix-seh-rt_v5-rev0.7z" ./minwg.7z
+              SHOW_PROGRESS
+            )
+          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../minwg.7z WORKING_DIRECTORY qt5)
+        elseif ("${{ runner.os }}" STREQUAL "Linux")
+          file(DOWNLOAD
+            "${qt_base_url}/${qt_package_name}/${package_version}icu${package_suffix}.7z" ./${package}.7z
             SHOW_PROGRESS
           )
-         execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../minwg.7z WORKING_DIRECTORY qt5)
+          execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ../${package}.7z WORKING_DIRECTORY qt5)
+        endif()
+        
+        
+        
+
 
         file(READ "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" qtconfig)
         string(REPLACE "Enterprise" "OpenSource" qtconfig "${qtconfig}")
@@ -141,13 +153,13 @@ jobs:
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake
             $ENV{APP_PRO}
-            -spec win32-g++
+            -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++
             CONFIG+=release
           RESULT_VARIABLE result
         )
-        if (NOT result EQUAL 0)
-          message(FATAL_ERROR "Bad exit status")
-        endif()
+#        if (NOT result EQUAL 0)
+#          message(FATAL_ERROR "Bad exit status")
+#        endif()
         
     - name: Build
       shell: cmake -P {0}
