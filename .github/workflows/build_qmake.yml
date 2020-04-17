@@ -140,7 +140,7 @@ jobs:
         execute_process(COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake -version)
         execute_process(COMMAND qmake -query)
         
-        message ("!!!)
+        message ("!!!")
         execute_process(COMMAND "${CMAKE_COMMAND}" "-E" "environment")
         execute_process(COMMAND cat ${{ steps.qt.outputs.qt_dir }}/bin/qt.conf)
         message ("!!")
