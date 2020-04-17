@@ -159,6 +159,9 @@ jobs:
           endforeach()
         endif()
         
+        set(ENV{QTDIR} "${{ steps.qt.outputs.qt_dir }}")
+        message( $ENV{PATH} )
+        
         if ("${{ runner.os }}" STREQUAL "Windows")
           set( spec "-makefile -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
         elseif ("${{ runner.os }}" STREQUAL "Linux")
@@ -167,6 +170,10 @@ jobs:
         execute_process(COMMAND ls .)
         execute_process(COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake --version OUTPUT_VARIABLE FOO)
         message( ${FOO} )
+        
+        execute_process(COMMAND ls -l /home/qt/work/install)
+        execute_process(COMMAND ls -l /home/qt/work/install/lib)
+        
         message ($ENV{QTDIR})
         message ("!!")
         execute_process(
