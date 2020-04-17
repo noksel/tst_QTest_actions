@@ -106,11 +106,7 @@ jobs:
         string(REPLACE "licheck64" "" qtconfig "${qtconfig}")
         string(REPLACE "licheck_mac" "" qtconfig "${qtconfig}")
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
-        
-        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/;$ENV{PATH}")
-        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
-        
-        message( $ENV{PATH} )
+        file(WRITE "qt5/${qt_dir_prefix}/bin/qt.conf"  "[Paths]\nPrefix=..")
      
     - name: Configure
       shell: cmake -P {0}
@@ -137,12 +133,19 @@ jobs:
             endif()
           endforeach()
         endif()
+                        
+        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/;$ENV{PATH}")
+        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
+        message( $ENV{PATH} )
+        
+        if ("${{ runner.os }}" STREQUAL "Windows")
+          set( SPEC "-spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
+        elseif ("${{ runner.os }}" STREQUAL "Linux")
+          set( SPEC -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/linux-g++-64 )
+        endif()
         
         execute_process(
-          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake
-            $ENV{APP_PRO}
-            -spec win32-g++
-            CONFIG+=release
+          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake ${SPEC} "CONFIG+=release" $ENV{APP_PRO}
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
@@ -161,9 +164,9 @@ jobs:
         include(ProcessorCount)
         ProcessorCount(N)
 
-        set(make_program make -j ${N})
+        set(make_program mingw32-make -j ${N})
         execute_process(
-          COMMAND ${make_program}
+          COMMAND ${make_program} -f Makefile
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
@@ -173,9 +176,11 @@ jobs:
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/$ENV{APP_NAME}-$ENV{QT_VERSION}-${{ matrix.config.artifact }}" artifact)
 
         execute_process(COMMAND
-          ${CMAKE_COMMAND} -E tar cvf ${artifact} --format=zip "${{ steps.qt_creator.outputs.qtc_binary_name }}"
-          WORKING_DIRECTORY "${{ steps.qt_creator.outputs.qtc_output_directory }}"
+          ${CMAKE_COMMAND} -E tar cvf ${artifact} --format=zip "$ENV{APP_NAME}"
+          WORKING_DIRECTORY "$ENV{GITHUB_WORKSPACE}"
         )
+        execute_process(COMMAND ls $ENV{GITHUB_WORKSPACE})
+        execute_process(COMMAND $ENV{APP_NAME})
 
     - uses: actions/upload-artifact@v1
       id: upload_artifact
