@@ -123,7 +123,7 @@ jobs:
         string(REPLACE "licheck64" "" qtconfig "${qtconfig}")
         string(REPLACE "licheck_mac" "" qtconfig "${qtconfig}")
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
-        file(WRITE "qt5/${qt_dir_prefix}/bin/qt.conf"  "[Paths]\r\nPrefix=..")
+        file(WRITE "qt5/${qt_dir_prefix}/bin/qt.conf"  "[Paths]\nPrefix=..")
 
     - name: Configure
       shell: cmake -P {0}
@@ -156,12 +156,12 @@ jobs:
         endif()
         
         message( $ENV{PATH} )  
-        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin:$ENV{PATH}")
-#        set(ENV{QTDIR} "$ENV{GITHUB_WORKSPACE}/qt5/$ENV{QT_VERSION}")
-#        set(ENV{QT_DIR} "$ENV{GITHUB_WORKSPACE}/qt5/$ENV{QT_VERSION}")
-#        set(ENV{QMAKESPEC} "${{ steps.qt.outputs.qt_dir }}/mkspecs")
-#        set(ENV{QT_SYSROOT} "${{ steps.qt.outputs.qt_dir }}")
-#        message( $ENV{QTDIR} )
+        #set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin:$ENV{PATH}")
+        #set(ENV{QTDIR} "$ENV{GITHUB_WORKSPACE}/qt5/$ENV{QT_VERSION}")
+        #set(ENV{QT_DIR} "$ENV{GITHUB_WORKSPACE}/qt5/$ENV{QT_VERSION}")
+        #set(ENV{QMAKESPEC} "${{ steps.qt.outputs.qt_dir }}/mkspecs")
+        #set(ENV{QT_SYSROOT} "${{ steps.qt.outputs.qt_dir }}")
+        message( $ENV{QTDIR} )
         message( $ENV{PATH} )
         
         if ("${{ runner.os }}" STREQUAL "Windows")
@@ -170,9 +170,9 @@ jobs:
           set( SPEC "-spec linux-g++-64" )
         endif()
         execute_process(COMMAND ls .)
-#        execute_process(COMMAND qmake -set "QT_SYSROOT" ${{ steps.qt.outputs.qt_dir }})
-#        execute_process(COMMAND qmake -set QMAKESPEC ${{ steps.qt.outputs.qt_dir }}/mkspecs)
-#        execute_process(COMMAND qmake -set QMAKE_SPEC ${{ steps.qt.outputs.qt_dir }}/mkspecs)
+        #execute_process(COMMAND qmake -set "QT_SYSROOT" ${{ steps.qt.outputs.qt_dir }})
+        #execute_process(COMMAND qmake -set QMAKESPEC ${{ steps.qt.outputs.qt_dir }}/mkspecs)
+        #execute_process(COMMAND qmake -set QMAKE_SPEC ${{ steps.qt.outputs.qt_dir }}/mkspecs)
         
         execute_process(COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake -version)
         execute_process(COMMAND qmake -query)
