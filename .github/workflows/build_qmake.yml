@@ -179,10 +179,10 @@ jobs:
         file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}/$ENV{APP_NAME}-$ENV{QT_VERSION}-${{ matrix.config.artifact }}" artifact)
 
         execute_process(COMMAND
-          ${CMAKE_COMMAND} -E tar cvf ${artifact} --format=zip "release/$ENV{APP_NAME}"
+          ${CMAKE_COMMAND} -E tar cvf ${artifact} --format=zip "release/$ENV{APP_NAME}.exe"
           WORKING_DIRECTORY "$ENV{GITHUB_WORKSPACE}"
         )
-        execute_process(COMMAND ls $ENV{GITHUB_WORKSPACE})
+        execute_process(COMMAND ls $ENV{GITHUB_WORKSPACE}/release)
         execute_process(COMMAND release/$ENV{APP_NAME})
 
     - uses: actions/upload-artifact@v1
