@@ -167,7 +167,7 @@ jobs:
         if ("${{ runner.os }}" STREQUAL "Windows")
           set( SPEC "-spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
         elseif ("${{ runner.os }}" STREQUAL "Linux")
-          set( SPEC "-makefile -f Makefile.Release" )
+          set( SPEC -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/linux-g++-64 )
         endif()
         execute_process(COMMAND ls .)
         #execute_process(COMMAND qmake -set "QT_SYSROOT" ${{ steps.qt.outputs.qt_dir }})
@@ -181,7 +181,7 @@ jobs:
         execute_process(COMMAND "${CMAKE_COMMAND}" "-E" "environment")
         execute_process(COMMAND cat ${{ steps.qt.outputs.qt_dir }}/bin/qt.conf)
         message ("!!")
-        message ( "run_qmake: ${{ steps.qt.outputs.qt_dir }}/bin/qmake ${SPEC} "CONFIG+=release" $ENV{APP_PRO} ")
+        message ( "run_qmake: ${{ steps.qt.outputs.qt_dir }}/bin/qmake ${SPEC} CONFIG+=release $ENV{APP_PRO} ")
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake ${SPEC} "CONFIG+=release" $ENV{APP_PRO}
           RESULT_VARIABLE result
