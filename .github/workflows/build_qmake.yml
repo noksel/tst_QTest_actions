@@ -158,7 +158,9 @@ jobs:
         endif()
         
         if ("${{ runner.os }}" STREQUAL "Windows")
-            set( spec "-spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
+          set( spec "-spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
+        elseif ("${{ runner.os }}" STREQUAL "Linux")
+          set( spec "-spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/linux-g++" )
         endif()
          
         execute_process(
