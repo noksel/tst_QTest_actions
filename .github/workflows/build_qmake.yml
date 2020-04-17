@@ -203,14 +203,17 @@ jobs:
         include(ProcessorCount)
         ProcessorCount(N)
         
-        execute_process(COMMAND ls $ENV{GITHUB_WORKSPACE})
-        execute_process(COMMAND ls qt5/)
+
 
         set(make_program make -j ${N})
         execute_process(
           COMMAND ${make_program} -f Makefile
           RESULT_VARIABLE result
         )
+        
+        execute_process(COMMAND ls $ENV{GITHUB_WORKSPACE})
+        execute_process(COMMAND ls qt5/)        
+        
         if (NOT result EQUAL 0)
           message(FATAL_ERROR "Bad exit status")
         endif()
