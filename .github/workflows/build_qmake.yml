@@ -222,7 +222,7 @@ jobs:
 
         execute_process(COMMAND
           ${CMAKE_COMMAND} -E tar cvf ${artifact} --format=zip "${{ steps.qt_creator.outputs.qtc_binary_name }}"
-          WORKING_DIRECTORY "${{ steps.qt_creator.outputs.qtc_output_directory }}"
+          WORKING_DIRECTORY "$ENV{APP_NAME}"
         )
 
     - uses: actions/upload-artifact@v1
