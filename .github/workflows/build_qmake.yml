@@ -157,22 +157,22 @@ jobs:
         
         message( $ENV{PATH} )  
         set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin:$ENV{PATH}")
-        set(ENV{QTDIR} "$ENV{GITHUB_WORKSPACE}/qt5/$ENV{QT_VERSION}")
-        set(ENV{QT_DIR} "$ENV{GITHUB_WORKSPACE}/qt5/$ENV{QT_VERSION}")
-        set(ENV{QMAKESPEC} "${{ steps.qt.outputs.qt_dir }}/mkspecs")
-        set(ENV{QT_SYSROOT} "${{ steps.qt.outputs.qt_dir }}")
-        message( $ENV{QTDIR} )
+#        set(ENV{QTDIR} "$ENV{GITHUB_WORKSPACE}/qt5/$ENV{QT_VERSION}")
+#        set(ENV{QT_DIR} "$ENV{GITHUB_WORKSPACE}/qt5/$ENV{QT_VERSION}")
+#        set(ENV{QMAKESPEC} "${{ steps.qt.outputs.qt_dir }}/mkspecs")
+#        set(ENV{QT_SYSROOT} "${{ steps.qt.outputs.qt_dir }}")
+#        message( $ENV{QTDIR} )
         message( $ENV{PATH} )
         
         if ("${{ runner.os }}" STREQUAL "Windows")
-          set( SPEC "-makefile -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
+          set( SPEC "-spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
         elseif ("${{ runner.os }}" STREQUAL "Linux")
-          set( SPEC "-makefile -spec linux-g++-64" )
+          set( SPEC "-spec linux-g++-64" )
         endif()
         execute_process(COMMAND ls .)
-        execute_process(COMMAND qmake -set "QT_SYSROOT" ${{ steps.qt.outputs.qt_dir }})
-        execute_process(COMMAND qmake -set QMAKESPEC ${{ steps.qt.outputs.qt_dir }}/mkspecs)
-        execute_process(COMMAND qmake -set QMAKE_SPEC ${{ steps.qt.outputs.qt_dir }}/mkspecs)
+#        execute_process(COMMAND qmake -set "QT_SYSROOT" ${{ steps.qt.outputs.qt_dir }})
+#        execute_process(COMMAND qmake -set QMAKESPEC ${{ steps.qt.outputs.qt_dir }}/mkspecs)
+#        execute_process(COMMAND qmake -set QMAKE_SPEC ${{ steps.qt.outputs.qt_dir }}/mkspecs)
         
         execute_process(COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake -version)
         execute_process(COMMAND qmake -query)
@@ -182,7 +182,7 @@ jobs:
         execute_process(COMMAND cat ${{ steps.qt.outputs.qt_dir }}/bin/qt.conf)
         message ("!!")
         execute_process(
-          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake "CONFIG+=release" $ENV{APP_PRO}
+          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake ${SPEC} "CONFIG+=release" $ENV{APP_PRO}
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
