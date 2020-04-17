@@ -106,7 +106,7 @@ jobs:
         string(REPLACE "licheck64" "" qtconfig "${qtconfig}")
         string(REPLACE "licheck_mac" "" qtconfig "${qtconfig}")
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
-        file(WRITE "qt5/${qt_dir_prefix}/bin/qt.conf"  "[Paths]\nPrefix=..")
+        file(WRITE "qt5/${qt_dir_prefix}/bin/qt.conf"  "[Paths]\r\nPrefix=..\r\n")
      
     - name: Configure
       shell: cmake -P {0}
@@ -127,8 +127,8 @@ jobs:
         #    endif()
         #  endforeach()
         #endif()
-        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/\;$ENV{PATH}")
-        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/\;$ENV{PATH}")
+        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/;$ENV{PATH}")
+        set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
         message( $ENV{PATH} )
         
         if ("${{ runner.os }}" STREQUAL "Windows")
@@ -136,8 +136,10 @@ jobs:
         elseif ("${{ runner.os }}" STREQUAL "Linux")
           set( SPEC -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/linux-g++-64 )
         endif()
+         execute_process(COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake -version)
+        execute_process(COMMAND qmake -query)
         
-        message ("!!! QTDIR: $ENV{QTDIR}")
+        message ("!!!)
         execute_process(COMMAND "${CMAKE_COMMAND}" "-E" "environment")
         execute_process(COMMAND cat ${{ steps.qt.outputs.qt_dir }}/bin/qt.conf)
         message ("!!")
