@@ -165,7 +165,10 @@ jobs:
           set( spec "-makefile -spec linux-g++-64" )
         endif()
         execute_process(COMMAND ls .)
-        execute_process(COMMAND qmake --version)
+        execute_process(COMMAND qmake --version OUTPUT_VARIABLE FOO)
+        message( ${FOO} )
+        message ($END{QTDIR})
+        message ("!!")
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake CONFIG+=release $ENV{APP_PRO}
           RESULT_VARIABLE result
