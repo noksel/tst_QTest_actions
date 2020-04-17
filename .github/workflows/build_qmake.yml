@@ -179,10 +179,10 @@ jobs:
       
         message ("!!! QTDIR: $ENV{QTDIR}")
         execute_process(COMMAND "${CMAKE_COMMAND}" "-E" "environment")
-        execute_process(COMMAND cat qt5/${qt_dir_prefix}/bin/qt.conf)
+        execute_process(COMMAND cat ${{ steps.qt.outputs.qt_dir }}/bin/qt.conf)
         message ("!!")
         execute_process(
-          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake ${SPEC} "CONFIG+=release" $ENV{APP_PRO}
+          COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake "CONFIG+=release" $ENV{APP_PRO}
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
