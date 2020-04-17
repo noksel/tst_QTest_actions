@@ -123,19 +123,16 @@ jobs:
         string(REPLACE "licheck64" "" qtconfig "${qtconfig}")
         string(REPLACE "licheck_mac" "" qtconfig "${qtconfig}")
         file(WRITE "qt5/${qt_dir_prefix}/mkspecs/qconfig.pri" "${qtconfig}")
-        
+
+    - name: Configure
+      shell: cmake -P {0}
+      run: |
         if ("${{ runner.os }}" STREQUAL "Windows")
           set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}/qt5/Tools/mingw730_64/bin/;$ENV{PATH}")
         endif()
         set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
-        
         set(ENV{QTDIR} "${{ steps.qt.outputs.qt_dir }}")
-        
-        message( $ENV{PATH} )
-     
-    - name: Configure
-      shell: cmake -P {0}
-      run: |
+        message( $ENV{PATH} )      
         if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
           execute_process(
             COMMAND "$ENV{VS_srp}" && set
