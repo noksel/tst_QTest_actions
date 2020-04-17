@@ -129,6 +129,8 @@ jobs:
         endif()
         set(ENV{PATH} "${{ steps.qt.outputs.qt_dir }}/bin/;$ENV{PATH}")
         
+        set(ENV{QTDIR} "${{ steps.qt.outputs.qt_dir }}")
+        
         message( $ENV{PATH} )
      
     - name: Configure
@@ -162,9 +164,8 @@ jobs:
         elseif ("${{ runner.os }}" STREQUAL "Linux")
           set( spec "-makefile -spec linux-g++-64" )
         endif()
-        
         execute_process(COMMAND ls .)
-         
+        execute_process(COMMAND qmake --version)
         execute_process(
           COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake CONFIG+=release $ENV{APP_PRO}
           RESULT_VARIABLE result
@@ -172,6 +173,7 @@ jobs:
         if (NOT result EQUAL 0)
           message(FATAL_ERROR "Bad exit status")
         endif()
+        execute_process(COMMAND ls .)
         
     - name: Build
       shell: cmake -P {0}
@@ -185,10 +187,8 @@ jobs:
         include(ProcessorCount)
         ProcessorCount(N)
         
-        execute_process(COMMAND ls $ENV{GITHUB_WORKSPACE} FOO)
-        message( ${FOO} )
-        execute_process(COMMAND ls qt5/ FOO)
-        message( ${FOO} )
+        execute_process(COMMAND ls $ENV{GITHUB_WORKSPACE})
+        execute_process(COMMAND ls qt5/)
 
         set(make_program make -j ${N})
         execute_process(
