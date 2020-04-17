@@ -132,11 +132,12 @@ jobs:
         message( $ENV{PATH} )
         
         if ("${{ runner.os }}" STREQUAL "Windows")
-          set( SPEC "-spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++" )
+          set( SPEC -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/win32-g++ )
         elseif ("${{ runner.os }}" STREQUAL "Linux")
           set( SPEC -spec ${{ steps.qt.outputs.qt_dir }}/mkspecs/linux-g++-64 )
         endif()
-         execute_process(COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake -version)
+        
+        execute_process(COMMAND ${{ steps.qt.outputs.qt_dir }}/bin/qmake -version)
         execute_process(COMMAND qmake -query)
         
         message ("!!!)
