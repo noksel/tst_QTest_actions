@@ -180,7 +180,7 @@ jobs:
 
         set(make_program make -j ${N})
         execute_process(
-          COMMAND ${make_program}
+          COMMAND ${make_program} -f Makefile.Release
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)
